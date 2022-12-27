@@ -14,23 +14,23 @@ function App() {
     longitude: -122.406417  // The target longitude
   };
 
-  function OrientationTracker() {
-    const [orientation, setOrientation] = useState('');
+  // function OrientationTracker() {
+  //   const [orientation, setOrientation] = useState('');
 
-    useEffect(() => {
-      function handleOrientationChange() {
-        setOrientation(window.screen.orientation.type);
-      }
+  //   useEffect(() => {
+  //     function handleOrientationChange() {
+  //       setOrientation(window.screen.orientation.type);
+  //     }
 
-      window.addEventListener('orientationchange', handleOrientationChange);
+  //     window.addEventListener('orientationchange', handleOrientationChange);
 
-      return () => {
-        window.removeEventListener('orientationchange', handleOrientationChange);
-      };
-    }, []);
+  //     return () => {
+  //       window.removeEventListener('orientationchange', handleOrientationChange);
+  //     };
+  //   }, []);
 
-    return orientation
-  }
+  //   return orientation
+  // }
 
   // Initialize the device orientation and geolocation events
   window.addEventListener('deviceorientation', handleOrientationEvent);
