@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import arrow from './arrow-symbol.png';
 import './App.css';
 
@@ -14,23 +14,23 @@ function App() {
     longitude: -122.406417  // The target longitude
   };
 
-  function OrientationTracker() {
-    const [orientation, setOrientation] = useState('');
+  // function OrientationTracker() {
+  //   const [orientation, setOrientation] = useState('');
 
-    useEffect(() => {
-      function handleOrientationChange() {
-        setOrientation(window.screen.orientation.type);
-      }
+  //   useEffect(() => {
+  //     function handleOrientationChange() {
+  //       setOrientation(window.screen.orientation.type);
+  //     }
 
-      window.addEventListener('orientationchange', handleOrientationChange);
+  //     window.addEventListener('orientationchange', handleOrientationChange);
 
-      return () => {
-        window.removeEventListener('orientationchange', handleOrientationChange);
-      };
-    }, []);
+  //     return () => {
+  //       window.removeEventListener('orientationchange', handleOrientationChange);
+  //     };
+  //   }, []);
 
-    return orientation
-  }
+  //   return orientation
+  // }
 
   // Initialize the device orientation and geolocation events
   window.addEventListener('deviceorientation', handleOrientationEvent);
@@ -111,7 +111,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img id='arrow' src={arrow} className="App-logo" alt="logo" />
-        <p>Orientation: {currentOrientation}, Location: {currentLocation}</p>
+        {/* <p>Orientation: {currentOrientation}, Location: {currentLocation}</p> */}
         {/*<a
           className="App-link"
           href="https://reactjs.org"
