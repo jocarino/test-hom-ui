@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import arrow from './arrow-symbol.png';
+import React from 'react';
+import arrow from 'arrow-symbol.png';
 import './App.css';
 
 function App() {
@@ -111,7 +111,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img id='arrow' src={arrow} className="App-logo" alt="logo" />
-        <p>Orientation: {currentOrientation}, Location: {currentLocation}</p>
+        {/* <p>Orientation: {currentOrientation}, Location: {currentLocation}</p> */}
         {/*<a
           className="App-link"
           href="https://reactjs.org"
