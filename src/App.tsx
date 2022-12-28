@@ -1,5 +1,5 @@
 import React from 'react';
-import arrow from 'arrow-symbol.png';
+import arrow from './arrow-symbol.png';
 import './App.css';
 
 function App() {
