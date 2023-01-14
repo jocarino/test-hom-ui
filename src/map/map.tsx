@@ -25,7 +25,7 @@ const MyMap: React.FunctionComponent<Props> = () => {
             }, 1000);
 
 
-        }, [])
+        }, [map])
 
 
         return position === null ? null : (<Marker position={position}>
