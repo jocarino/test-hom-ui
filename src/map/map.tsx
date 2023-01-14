@@ -9,9 +9,8 @@ const MyMap: React.FunctionComponent<Props> = () => {
     const center: L.LatLngExpression = [51.505, -0.09]
     const defaultZoom = 13
     const [map, setMap] = useState<L.Map | null>(null)
-    const [marker, setMarker] = useState(null)
     const [location, setLocation] = useState({ lat: 0, lng: 0 });
-    const [error, setError] = useState<GeolocationPositionError | null>(null);
+    const [_, setError] = useState<GeolocationPositionError | null>(null);
 
     useEffect(() => {
         const watchId = navigator.geolocation.watchPosition(
@@ -32,7 +31,7 @@ const MyMap: React.FunctionComponent<Props> = () => {
         console.log(`location ${location.lat},${location.lng}`);
 
         return () => navigator.geolocation.clearWatch(watchId);
-    }, [location.lat, location.lng])
+    }, [location.lat, location.lng, map])
 
     const reCenterButton = (map: L.Map) => {
         const onClick = () => {
@@ -58,7 +57,7 @@ const MyMap: React.FunctionComponent<Props> = () => {
                 />
                 <LocationMarker />
             </MapContainer>
-        ), [location]
+        ), [location, LocationMarker, center]
     )
 
     return (
