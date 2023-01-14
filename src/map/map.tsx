@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
-import L, { LatLng, LatLngExpression } from 'leaflet';
+import L from 'leaflet';
 
 interface Props {
 }
@@ -35,7 +35,7 @@ const MyMap: React.FunctionComponent<Props> = () => {
 
     return (
         <><h1>Test</h1>
-            <MapContainer ref={mapRef} center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+            <MapContainer ref={mapRef} center={center} zoom={13} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
