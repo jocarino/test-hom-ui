@@ -5,12 +5,7 @@ import MyMap from './map';
 
 const MapHomePage: React.FC = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path='/' element={<MyMap />}></Route>
-                {/* <Route path='/upload/poster-location' element={<UploadPosterLocation />}></Route> */}
-            </Routes>
-        </BrowserRouter >
+        <MyMap />
     );
 };
 
