@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ImageComponent from "../common/imageComponent";
+import './poster.css';
 
 interface Props {
     title: string;
@@ -15,16 +16,12 @@ const Poster: React.FunctionComponent<Props> = ({title, description, imageSrc}) 
     }
     
     return (
-        <div>
+        <div className="poster_view">
             <h1>{title}</h1>
             <p>{description}</p>
-            <ImageComponent image={imageSrc} altText="Example" />
-            <div onClick={toggleCheck}>
-                {checked ? 
-                    <ImageComponent image="check" altText="Checked" /> : 
-                    null
-                }
-            </div>
+            <ImageComponent className="checked_unchecked" image={checked ? 'checked' : 'unchecked'} altText="Checked" />
+            <ImageComponent className="poster_img" image={imageSrc} altText="Example" />
+            <button onClick={toggleCheck}>{checked ? 'Not Seen' : 'Seen'}</button>
         </div>
     )
 }
