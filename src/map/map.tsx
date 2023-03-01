@@ -2,14 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 
-interface Props {
-}
-
-const MyMap: React.FunctionComponent<Props> = () => {
+const MyMap: React.FunctionComponent = () => {
     const center: L.LatLngExpression = [51.505, -0.09]
     const defaultZoom = 13
     const [map, setMap] = useState<L.Map | null>(null)
-    const [location, setLocation] = useState({ lat: 0, lng: 0 });
+    const [location, setLocation] = useState<{
+        lat: number;
+        lng: number;
+    }>();
     const [_, setError] = useState<GeolocationPositionError | null>(null);
 
     useEffect(() => {
@@ -19,8 +19,9 @@ const MyMap: React.FunctionComponent<Props> = () => {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                 });
-                if (map) {
+                if (map && location) {
                     map.setView([location.lat, location.lng])
+                    console.log(`location ${location.lat},${location.lng}`);
                 }
             },
             (error) => () => {
@@ -28,10 +29,23 @@ const MyMap: React.FunctionComponent<Props> = () => {
                 console.log(error);
             }
         );
-        console.log(`location ${location.lat},${location.lng}`);
 
         return () => navigator.geolocation.clearWatch(watchId);
-    }, [location.lat, location.lng, map])
+    }, [JSON.stringify(location), map])
+
+    const displayMap = useMemo(
+        () => (
+            location ? (<MapContainer ref={setMap} center={center} zoom={defaultZoom} scrollWheelZoom={true}>
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={location} />
+            </MapContainer>) : undefined
+        ), [location, center]
+    )
+
+    if (!location) { return <h1>Loading...</h1> }
 
     const reCenterButton = (map: L.Map) => {
         const onClick = () => {
@@ -44,24 +58,9 @@ const MyMap: React.FunctionComponent<Props> = () => {
         )
     }
 
-    const LocationMarker = () =>
-        <Marker position={location} />
-
-
-    const displayMap = useMemo(
-        () => (
-            <MapContainer ref={setMap} center={center} zoom={defaultZoom} scrollWheelZoom={true}>
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <LocationMarker />
-            </MapContainer>
-        ), [location, LocationMarker, center]
-    )
-
     return (
-        <><h1>Test</h1>
+        <>
+            <h1>Test</h1>
             {displayMap}
             {map ? reCenterButton(map) : null}
         </>
