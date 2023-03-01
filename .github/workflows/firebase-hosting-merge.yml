@@ -18,3 +18,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEST_HOM_UI }}'
           channelId: live
           projectId: test-hom-ui
+          CI: false

@@ -15,3 +15,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEST_HOM_UI }}'
           projectId: test-hom-ui
+          CI: false
