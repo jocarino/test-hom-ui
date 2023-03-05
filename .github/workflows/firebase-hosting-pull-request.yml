@@ -7,12 +7,21 @@ jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+    environment: staging
     steps:
       - uses: actions/checkout@v2
-      - run: CI=false && npm ci && npm run build:staging
+      - env:
+        REACT_APP_APIKEY: '${{ secrets.REACT_APP_APIKEY }}'
+        REACT_APP_AUTHDOMAIN: '${{ secrets.REACT_APP_AUTHDOMAIN }}'
+        REACT_APP_PROJECTID: '${{ secrets.REACT_APP_PROJECTID }}'
+        REACT_APP_STORAGEBUCKET: '${{ secrets.REACT_APP_STORAGEBUCKET }}'
+        REACT_APP_MESSAGINGSENDERID: '${{ secrets.REACT_APP_MESSAGINGSENDERID }}'
+        REACT_APP_APPID: '${{ secrets.REACT_APP_APPID }}'
+        REACT_APP_MEASUREMENTID: '${{ secrets.REACT_APP_MEASUREMENTID }}'
+      - run: CI=false && npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TEST_HOM_UI }}'
-          projectId: test-hom-ui
+          projectId: test-hom-ui  
 
