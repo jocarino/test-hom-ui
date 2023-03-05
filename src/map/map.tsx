@@ -3,7 +3,6 @@ import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 
 const MyMap: React.FunctionComponent = () => {
-    const center: L.LatLngExpression = [51.505, -0.09]
     const defaultZoom = 13
     const [map, setMap] = useState<L.Map | null>(null)
     const [location, setLocation] = useState<{
@@ -34,15 +33,17 @@ const MyMap: React.FunctionComponent = () => {
     }, [JSON.stringify(location), map])
 
     const displayMap = useMemo(
-        () => (
-            location ? (<MapContainer ref={setMap} center={center} zoom={defaultZoom} scrollWheelZoom={true}>
+        () => {
+            const center: L.LatLngExpression = [51.505, -0.09]
+
+            return (location ? (<MapContainer ref={setMap} center={center} zoom={defaultZoom} scrollWheelZoom={true} >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <Marker position={location} />
-            </MapContainer>) : undefined
-        ), [location, center]
+            </MapContainer >) : undefined)
+        }, [location]
     )
 
     if (!location) { return <h1>Loading...</h1> }
