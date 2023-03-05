@@ -1,0 +1,17 @@
+.poster_img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+}
+
+.checked_unchecked {
+    width: 40px;
+    height: 40px;
+}
+
+.poster_view {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
