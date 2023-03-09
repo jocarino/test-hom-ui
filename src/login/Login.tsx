@@ -2,16 +2,14 @@ import { error } from "console";
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, UserCredential } from "firebase/auth";
 import React, { useState, FormEvent } from "react";
 import { auth, googleProvider } from "../api/Firebase"
-import { actionTypes } from "../reducer";
-import { useStateValue } from "../StateProvider";
+import { SessionStorage } from "../common/constants";
+import { actionTypes } from "../context/reducer";
+import { useStateValue } from "../context/StateProvider";
 
 function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [{ }, dispatch] = useStateValue();
-
-
-
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -24,11 +22,9 @@ function Login() {
   const handleEmailLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then(result =>
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: result.user
-        })
+      .then(result => {
+        setUser(dispatch, result);
+      }
       )
       .catch(error => alert(error.message));
   }
@@ -44,11 +40,7 @@ function Login() {
         // IdP data available using getAdditionalUserInfo(result)
         // ...
         */
-
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: result.user
-        })
+        setUser(dispatch, result);
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -93,4 +85,13 @@ function Login() {
 };
 
 export default Login;
+
+function setUser(dispatch: any, result: UserCredential) {
+  dispatch({
+    type: actionTypes.SET_USER,
+    user: result.user
+  });
+  const userString = JSON.stringify(result.user);
+  sessionStorage.setItem(SessionStorage.USER_CREDENTIALS, userString);
+}
 

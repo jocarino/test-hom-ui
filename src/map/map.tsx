@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
+import { Link } from 'react-router-dom';
 
 const MyMap: React.FunctionComponent = () => {
     const defaultZoom = 13
@@ -62,6 +63,7 @@ const MyMap: React.FunctionComponent = () => {
     return (
         <>
             <h1>Test</h1>
+            <Link to="/poster">poster</Link>
             {displayMap}
             {map ? reCenterButton(map) : null}
         </>
