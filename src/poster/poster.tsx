@@ -23,7 +23,6 @@ const Poster: React.FunctionComponent<Props> = ({ title, description, imageSrc }
             <ImageComponent className="checked_unchecked" image={checked ? 'checked' : 'unchecked'} altText="Checked" />
             <ImageComponent className="poster_img" image={imageSrc} altText="Example" />
             <button onClick={toggleCheck}>{checked ? 'Not Seen' : 'Seen'}</button>
-            <Link to="/">Home</Link>
         </div>
     )
 }

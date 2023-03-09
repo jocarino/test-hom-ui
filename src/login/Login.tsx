@@ -1,6 +1,7 @@
 import { error } from "console";
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, UserCredential } from "firebase/auth";
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
+import { redirect } from "react-router-dom";
 import { auth, googleProvider } from "../api/Firebase"
 import { SessionStorage } from "../common/constants";
 import { actionTypes } from "../context/reducer";
@@ -9,7 +10,16 @@ import { useStateValue } from "../context/StateProvider";
 function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [{ }, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
+
+  // useEffect(() => {
+  //   console.log("user effect redirect");
+  //   if (user !== null) {
+  //     console.log("user not null");
+
+  //     return redirect("/")
+  //   }
+  // }, [user])
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -93,5 +103,6 @@ function setUser(dispatch: any, result: UserCredential) {
   });
   const userString = JSON.stringify(result.user);
   sessionStorage.setItem(SessionStorage.USER_CREDENTIALS, userString);
+  return redirect("/")
 }
 

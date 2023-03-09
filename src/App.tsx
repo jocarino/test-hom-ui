@@ -10,6 +10,7 @@ import { actionTypes } from './context/reducer';
 import { UserCredential } from 'firebase/auth';
 import { SessionStorage } from './common/constants';
 import { useEffect } from 'react';
+import Header from './header/Header';
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -18,24 +19,24 @@ function App() {
 
   return (
     <>
-      {!user ? (
-        <Login />
-      ) : (
-        <BrowserRouter>
-          <Routes>
-            <Route path="/"
-              element={<MapHomePage />} />
-            <Route path="/poster"
-              element={<Poster
-                title="posterTitle"
-                description="posterDescription"
-                imageSrc="monalisa"
-              />} />
-            <Route path='/upload/poster-location' element={<UploadPosterLocation />}></Route>
-          </Routes>
-        </BrowserRouter>
-      )
-      }
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/"
+            element={<MapHomePage />} />
+          <Route path="/poster"
+            element={<Poster
+              title="posterTitle"
+              description="posterDescription"
+              imageSrc="monalisa"
+            />} />
+          <Route path="/upload/poster-location"
+            element={<UploadPosterLocation />} />
+          <Route path="/login"
+            element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+
     </>
   );
 
@@ -48,7 +49,6 @@ function App() {
       const cachedUser: UserCredential = JSON.parse(userString);
       setUser(cachedUser, dispatch);
     } catch (error) {
-      console.log(error);
     }
     console.log(user);
   }
