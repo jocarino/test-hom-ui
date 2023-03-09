@@ -8,13 +8,13 @@ interface Props {
     imageSrc: string;
 }
 
-const Poster: React.FunctionComponent<Props> = ({title, description, imageSrc}) => {
+const Poster: React.FunctionComponent<Props> = ({ title, description, imageSrc }) => {
     const [checked, setChecked] = useState(false);
 
     const toggleCheck = () => {
         setChecked(!checked);
     }
-    
+
     return (
         <div className="poster_view">
             <h1>{title}</h1>
