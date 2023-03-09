@@ -21,7 +21,7 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+  const handleEmailLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(result =>
@@ -36,8 +36,8 @@ function Login() {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential ? credential.accessToken : null;
+        // // const credential = GoogleAuthProvider.credentialFromResult(result);
+        // // const token = credential ? credential.accessToken : null;
         /*
         // The signed-in user info.
         const user = result.user;
@@ -45,6 +45,10 @@ function Login() {
         // ...
         */
 
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: result.user
+        })
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -54,12 +58,13 @@ function Login() {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
+        alert(errorMessage)
       });
   };
 
   return (
     <div>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleEmailLogin}>
         <div>
           <label htmlFor="email">Email:</label>
           <input
