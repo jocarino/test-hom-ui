@@ -1,7 +1,6 @@
-import { error } from "console";
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, UserCredential } from "firebase/auth";
-import React, { useState, FormEvent, useEffect } from "react";
-import { redirect } from "react-router-dom";
+import React, { useState, FormEvent } from "react";
+import { NavigateFunction, useNavigate, useNavigation } from "react-router-dom";
 import { auth, googleProvider } from "../api/Firebase"
 import { SessionStorage } from "../common/constants";
 import { actionTypes } from "../context/reducer";
@@ -11,6 +10,7 @@ function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [{ user }, dispatch] = useStateValue();
+  const navigate: NavigateFunction = useNavigate()
 
   // useEffect(() => {
   //   console.log("user effect redirect");
@@ -33,7 +33,7 @@ function Login() {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then(result => {
-        setUser(dispatch, result);
+        setUser(dispatch, result, navigate);
       }
       )
       .catch(error => alert(error.message));
@@ -50,7 +50,7 @@ function Login() {
         // IdP data available using getAdditionalUserInfo(result)
         // ...
         */
-        setUser(dispatch, result);
+        setUser(dispatch, result, navigate);
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -96,13 +96,13 @@ function Login() {
 
 export default Login;
 
-function setUser(dispatch: any, result: UserCredential) {
+function setUser(dispatch: any, result: UserCredential, navigate: NavigateFunction) {
   dispatch({
     type: actionTypes.SET_USER,
     user: result.user
   });
   const userString = JSON.stringify(result.user);
   sessionStorage.setItem(SessionStorage.USER_CREDENTIALS, userString);
-  return redirect("/")
+  return navigate("/")
 }
 
