@@ -63,7 +63,6 @@ const MyMap: React.FunctionComponent = () => {
     return (
         <>
             <h1>Test</h1>
-            <Link to="/poster">poster</Link>
             {displayMap}
             {map ? reCenterButton(map) : null}
         </>

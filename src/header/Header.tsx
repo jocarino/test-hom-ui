@@ -1,20 +1,33 @@
 import React from "react";
 import { Link, redirect } from "react-router-dom";
+import { SessionStorage } from "../common/constants";
+import { actionTypes } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
 import Login from "../login/Login";
 
 function Header() {
-    const [{ user }] = useStateValue();
+    const [{ user }, dispatch] = useStateValue();
 
+    const signOut = () => {
+        dispatch({
+            type: actionTypes.SET_USER,
+            user: null
+        });
+        sessionStorage.removeItem(SessionStorage.USER_CREDENTIALS);
+    }
 
     return (
-        <div>
-            {!user ?
+        <>
+            {!user ? (
                 <Link to="/login">sign in</Link>
-                :
-                user.displayName
+            ) : (
+                <>
+                    {user.displayName}
+                    <span onClick={signOut}>sign out</span>
+                </>
+            )
             }
-        </div>
+        </>
     )
 }
 
