@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import db from "../api/Firebase";
-import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import { db } from "../api/Firebase";
+import { doc, updateDoc } from "firebase/firestore";
 import { isNullOrUndefined } from "../utils/utils";
-import { initializeApp } from "firebase/app";
 
 
 const UploadPosterLocation: React.FunctionComponent = () => {

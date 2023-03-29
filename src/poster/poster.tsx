@@ -1,26 +1,54 @@
-import React, { useState } from "react";
+import { ref, StorageReference, getDownloadURL } from "@firebase/storage";
+import React, { useEffect, useState } from "react";
+import { storage } from "../api/Firebase";
 import ImageComponent from "../common/imageComponent";
 import './poster.css';
+import loadingGif from '../common/images/loading.gif'
 
 interface Props {
+    id: string;
+    imageRef: StorageReference;
     title: string;
     description: string;
-    imageSrc: string;
 }
 
-const Poster: React.FunctionComponent<Props> = ({title, description, imageSrc}) => {
+const Poster: React.FunctionComponent<Props> = ({ id, title, description, imageRef }) => {
     const [checked, setChecked] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     const toggleCheck = () => {
         setChecked(!checked);
-    }
-    
+    };
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const url = await getDownloadURL(imageRef);
+                setImageUrl(url);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchImage();
+    }, [imageRef]);
+
     return (
-        <div className="poster_view">
+        <div key={id} id={id} className="poster_view">
             <h1>{title}</h1>
             <p>{description}</p>
-            <ImageComponent className="checked_unchecked" image={checked ? 'checked' : 'unchecked'} altText="Checked" />
-            <ImageComponent className="poster_img" image={imageSrc} altText="Example" />
+            <ImageComponent
+                id={`imgcheckmark_${imageRef.name}`}
+                className="checked_unchecked"
+                image={checked ? 'checked' : 'unchecked'}
+                altText="Checked"
+            />
+            <ImageComponent
+                id={`posterimage_${imageRef.name}`}
+                className="poster_img"
+                image={imageUrl || loadingGif}
+                altText="Example"
+            />
             <button onClick={toggleCheck}>{checked ? 'Not Seen' : 'Seen'}</button>
         </div>
     )

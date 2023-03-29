@@ -4,12 +4,13 @@ import checked from './images/checked.png';
 import unchecked from './images/unchecked.png';
 
 interface Props {
-  className?: string;
-  image: string;
-  altText: string;
+    id: string;
+    className?: string;
+    image: string;
+    altText: string;
 }
 
-const ImageComponent: React.FC<Props> = ({ className, image, altText }) => {
+const ImageComponent: React.FC<Props> = ({ id, className, image, altText }) => {
     let imageSrc: string;
     switch (image) {
         case 'monalisa':
@@ -22,11 +23,11 @@ const ImageComponent: React.FC<Props> = ({ className, image, altText }) => {
             imageSrc = unchecked;
             break;
         default:
-            imageSrc = '';
+            imageSrc = image;
     }
     return (
-    <img className={className} src={imageSrc} alt={altText} />
-  );
+        <img id={id} className={className} src={imageSrc} alt={altText} />
+    );
 }
 
 export default ImageComponent;
