@@ -32,10 +32,15 @@ const PosterFeed: React.FunctionComponent = () => {
 
     return posterRefList.length === 0 ? <img src={loadingGif} alt="loading..." /> :
         <>
-            {posterRefList.map(posterRef => <Poster
-                imageRef={posterRef}
-                title="posterTitle"
-                description="posterDescription"
-            />)}</>
+            {posterRefList.map(posterRef =>
+                <li key={posterRef.name}>
+                    <Poster
+                        id={`poster_${posterRef.name}`}
+                        imageRef={posterRef}
+                        title="posterTitle"
+                        description="posterDescription"
+                    />
+                </li>
+            )}</>
 }
 export default PosterFeed

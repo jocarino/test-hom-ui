@@ -23,7 +23,7 @@ const ImageComponent: React.FC<Props> = ({ id, className, image, altText }) => {
             imageSrc = unchecked;
             break;
         default:
-            imageSrc = '';
+            imageSrc = image;
     }
     return (
         <img id={id} className={className} src={imageSrc} alt={altText} />
