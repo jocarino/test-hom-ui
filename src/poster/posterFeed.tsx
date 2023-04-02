@@ -1,44 +1,41 @@
 import { listAll, ref, StorageReference } from "firebase/storage";
-import { storage } from "../api/Firebase";
+import { db, storage } from "../api/Firebase";
 import Poster from "./poster"
 import loadingGif from '../common/images/loading.gif'
 import { useEffect, useState } from "react";
+import { collection, getDocs, query } from "firebase/firestore";
+import { PosterData, PosterDoc } from "./types";
 
 const PosterFeed: React.FunctionComponent = () => {
 
-    const [posterRefList, setPosterRefList] = useState<StorageReference[]>([]);
-
-
-    // Create a reference under which you want to list
-    const listRef = ref(storage, 'posters');
-    const getPosterRefList = async () => {
-        // Find all the prefixes and items.
-        return listAll(listRef)
-            .then((res) => {
-                return res.items
-            }).catch((error) => {
-                // Uh-oh, an error occurred!
-                alert(error)
-                return []
-            });
-    }
+    const [postersData, setPostersData] = useState<PosterDoc[]>([]);
 
     useEffect(() => {
         const callerFunction = async () => {
-            setPosterRefList(await getPosterRefList())
+            const postersDocData: PosterDoc[] = [];
+            const response = (await getDocs(query(collection(db, 'posters'))));
+            await response.forEach((doc: any) => {
+                const posterId = doc.id
+                const posterData = doc.data() as PosterData
+                postersDocData.push({ ...posterData, id: posterId } as PosterDoc)
+            });
+
+            setPostersData(postersDocData)
+
+
         }
         callerFunction()
     }, [])
 
-    return posterRefList.length === 0 ? <img src={loadingGif} alt="loading..." /> :
+    return postersData.length === 0 ? <img src={loadingGif} alt="loading..." /> :
         <>
-            {posterRefList.map(posterRef =>
-                <li key={posterRef.name}>
+            {postersData.map((poster) =>
+                <li key={poster.id}>
                     <Poster
-                        id={`poster_${posterRef.name}`}
-                        imageRef={posterRef}
-                        title="posterTitle"
-                        description="posterDescription"
+                        id={`poster_${poster.id}`}
+                        posterId={poster.id}
+                        title={poster.title}
+                        description={poster.description}
                     />
                 </li>
             )}</>

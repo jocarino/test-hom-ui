@@ -7,14 +7,15 @@ import loadingGif from '../common/images/loading.gif'
 
 interface Props {
     id: string;
-    imageRef: StorageReference;
+    posterId: string;
     title: string;
     description: string;
 }
 
-const Poster: React.FunctionComponent<Props> = ({ id, title, description, imageRef }) => {
+const Poster: React.FunctionComponent<Props> = ({ id, posterId, title, description }) => {
     const [checked, setChecked] = useState(false);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const imageRef = ref(storage, `/posters/${posterId}`)
 
     const toggleCheck = () => {
         setChecked(!checked);
