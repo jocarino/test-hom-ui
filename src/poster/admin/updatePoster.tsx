@@ -12,7 +12,6 @@ function useQuery() {
 
 
 const PosterCMSPage: React.FunctionComponent = () => {
-    const [poster, setPoster] = useState<Poster | null>(null);
     const [state, setState] = useState<string>(State.Loading);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
@@ -35,7 +34,6 @@ const PosterCMSPage: React.FunctionComponent = () => {
                 const posterData = posterDoc.data() as PosterData;
                 const imageRef = ref(storage, `posters/${posterId}`);
                 setImageUrl(await getDownloadURL(imageRef));
-                setPoster(posterData);
                 setTitle(posterData.title ?? '');
                 setDescription(posterData.description ?? '');
                 setState(State.Loaded);
@@ -70,11 +68,6 @@ const PosterCMSPage: React.FunctionComponent = () => {
 
             const newImageRef = ref(storage, `posters/${posterId}`);
             const uploadImageResonse = await uploadBytes(newImageRef, image)
-            // TODO handle image upload response
-            setImageUrl(await getDownloadURL(newImageRef));
-
-
-
         }
         // Update the poster information in Firestore
         if (title.length > 0 || description.length > 0) {
