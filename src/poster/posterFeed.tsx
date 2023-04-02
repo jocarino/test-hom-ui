@@ -29,13 +29,13 @@ const PosterFeed: React.FunctionComponent = () => {
 
     return postersData.length === 0 ? <img src={loadingGif} alt="loading..." /> :
         <>
-            {postersData.map((posterData) =>
-                <li key={posterData.id}>
+            {postersData.map((poster) =>
+                <li key={poster.id}>
                     <Poster
-                        id={`poster_${posterData.id}`}
-                        posterId={posterData.id}
-                        title={posterData.title}
-                        description={posterData.description}
+                        id={`poster_${poster.id}`}
+                        posterId={poster.id}
+                        title={poster.title}
+                        description={poster.description}
                     />
                 </li>
             )}</>
