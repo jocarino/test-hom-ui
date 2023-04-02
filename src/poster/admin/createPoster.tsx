@@ -33,7 +33,6 @@ const CreatePosterPage: React.FunctionComponent = () => {
             const posterId = title.replace(/\s/g, '')
             const newImageRef = ref(storage, `posters/${posterId}`);
             const uploadImageResponse = await uploadBytes(newImageRef, image);
-            setImageUrl(await getDownloadURL(newImageRef));
 
             // Add a new poster to Firestore
             const postersRef = doc(db, 'posters', posterId);
