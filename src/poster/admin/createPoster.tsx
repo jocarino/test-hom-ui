@@ -4,30 +4,23 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../../api/Firebase';
 import { ImageWrapper } from '../posterSC';
-import { PosterData } from '../types';
-
-enum State {
-    Idle = 'idle',
-    Loading = 'loading',
-    Loaded = 'loaded',
-    Error = 'error'
-}
-
-
+import { PosterData, State } from '../types';
 
 const CreatePosterPage: React.FunctionComponent = () => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [image, setImage] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string>('');
-    const [state, setState] = useState<State>(State.Idle);
+    const [state, setState] = useState<State>(State.Loaded);
     const navigate = useNavigate();
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
+            setState(State.Loading)
             setImage(e.target.files[0]);
             setImageUrl(URL.createObjectURL(e.target.files[0])); // set the image URL
         }
+        setState(State.Loaded)
 
     };
 

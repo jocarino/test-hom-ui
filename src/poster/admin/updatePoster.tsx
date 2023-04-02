@@ -2,16 +2,9 @@ import { doc, getDoc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import React, { useState, useEffect } from 'react';
 import { db, storage } from '../../api/Firebase'; // Import your Firebase configuration
-import { PosterData as Poster, PosterData } from '../types';
+import { PosterData as Poster, PosterData, State } from '../types';
 import { useLocation } from 'react-router-dom';
 import { ImageWrapper } from '../posterSC';
-
-enum State {
-    Loading = 'loading',
-    Loaded = 'loaded',
-    Error = 'error',
-    NotFound = 'not-found'
-}
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -56,32 +49,42 @@ const PosterCMSPage: React.FunctionComponent = () => {
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
+            setState(State.Loading)
             setImage(e.target.files[0]);
+            setImageUrl(URL.createObjectURL(e.target.files[0])); // set the image URL
         }
+        setState(State.Loaded)
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setState(State.Loading);
+
+        if (!posterId) {
+            setState(State.Error)
+            return
+        }
 
         // Upload the new image to Firebase Storage, if available
-        if (image && title.length > 0) {
+        if (image) {
+            setState(State.Loading);
+
             const newImageRef = ref(storage, `posters/${posterId}`);
             const uploadImageResonse = await uploadBytes(newImageRef, image)
             // TODO handle image upload response
             setImageUrl(await getDownloadURL(newImageRef));
 
 
-            // Update the poster information in Firestore
-            if (posterId) {
-                const posterRef = doc(db, 'posters', posterId)
-                await updateDoc(posterRef, {
-                    title,
-                    description,
-                });
-            }
-        }
 
+        }
+        // Update the poster information in Firestore
+        if (title.length > 0 || description.length > 0) {
+            setState(State.Loading);
+            const posterRef = doc(db, 'posters', posterId)
+            await updateDoc(posterRef, {
+                title,
+                description,
+            });
+        }
         setState(State.Loaded);
     };
 
