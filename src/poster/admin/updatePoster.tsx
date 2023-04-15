@@ -2,7 +2,7 @@ import { doc, getDoc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import React, { useState, useEffect } from 'react';
 import { db, storage } from '../../api/Firebase'; // Import your Firebase configuration
-import { PosterData as Poster, PosterData, State } from '../types';
+import { PosterData as Poster, PosterData, CreatePosterState } from '../../types/poster';
 import { useLocation } from 'react-router-dom';
 import { ImageWrapper } from '../posterSC';
 
@@ -12,7 +12,7 @@ function useQuery() {
 
 
 const PosterCMSPage: React.FunctionComponent = () => {
-    const [state, setState] = useState<string>(State.Loading);
+    const [state, setState] = useState<string>(CreatePosterState.Loading);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [image, setImage] = useState<File | null>(null);
@@ -25,7 +25,7 @@ const PosterCMSPage: React.FunctionComponent = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (!posterId) {
-                setState(State.NotFound)
+                setState(CreatePosterState.NotFound)
                 return
             }
             const posterRef = doc(db, 'posters', posterId)
@@ -36,10 +36,10 @@ const PosterCMSPage: React.FunctionComponent = () => {
                 setImageUrl(await getDownloadURL(imageRef));
                 setTitle(posterData.title ?? '');
                 setDescription(posterData.description ?? '');
-                setState(State.Loaded);
+                setState(CreatePosterState.Loaded);
             }
             else {
-                setState(State.NotFound)
+                setState(CreatePosterState.NotFound)
             }
         };
         fetchData();
@@ -47,45 +47,45 @@ const PosterCMSPage: React.FunctionComponent = () => {
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setState(State.Loading)
+            setState(CreatePosterState.Loading)
             setImage(e.target.files[0]);
             setImageUrl(URL.createObjectURL(e.target.files[0])); // set the image URL
         }
-        setState(State.Loaded)
+        setState(CreatePosterState.Loaded)
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!posterId) {
-            setState(State.Error)
+            setState(CreatePosterState.Error)
             return
         }
 
         // Upload the new image to Firebase Storage, if available
         if (image) {
-            setState(State.Loading);
+            setState(CreatePosterState.Loading);
 
             const newImageRef = ref(storage, `posters/${posterId}`);
             const uploadImageResonse = await uploadBytes(newImageRef, image)
         }
         // Update the poster information in Firestore
         if (title.length > 0 || description.length > 0) {
-            setState(State.Loading);
+            setState(CreatePosterState.Loading);
             const posterRef = doc(db, 'posters', posterId)
             await updateDoc(posterRef, {
                 title,
                 description,
             });
         }
-        setState(State.Loaded);
+        setState(CreatePosterState.Loaded);
     };
 
     switch (state) {
-        case State.Loading: {
+        case CreatePosterState.Loading: {
             return <div>Loading...</div>;
         }
-        case State.Loaded: {
+        case CreatePosterState.Loaded: {
             return (
                 <div className="poster-page">
                     <div>
@@ -113,10 +113,10 @@ const PosterCMSPage: React.FunctionComponent = () => {
                 </div>
             );
         }
-        case State.NotFound: {
+        case CreatePosterState.NotFound: {
             return <div>Not found.</div>;
         }
-        case State.Error:
+        case CreatePosterState.Error:
         default: {
             return <div>Something went wrong...</div>;
         }
