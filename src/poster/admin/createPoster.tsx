@@ -4,29 +4,29 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, storage } from '../../api/Firebase';
 import { ImageWrapper } from '../posterSC';
-import { PosterData, State } from '../types';
+import { PosterData, CreatePosterState } from '../../types/poster';
 
 const CreatePosterPage: React.FunctionComponent = () => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [image, setImage] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string>('');
-    const [state, setState] = useState<State>(State.Loaded);
+    const [state, setState] = useState<CreatePosterState>(CreatePosterState.Loaded);
     const navigate = useNavigate();
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setState(State.Loading)
+            setState(CreatePosterState.Loading)
             setImage(e.target.files[0]);
             setImageUrl(URL.createObjectURL(e.target.files[0])); // set the image URL
         }
-        setState(State.Loaded)
+        setState(CreatePosterState.Loaded)
 
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setState(State.Loading);
+        setState(CreatePosterState.Loading);
 
         // Upload the new image to Firebase Storage, if available
         if (image && title.length > 0) {
@@ -47,14 +47,14 @@ const CreatePosterPage: React.FunctionComponent = () => {
 
         }
 
-        setState(State.Loaded);
+        setState(CreatePosterState.Loaded);
     };
 
     switch (state) {
-        case State.Loading: {
+        case CreatePosterState.Loading: {
             return <div>Loading...</div>;
         }
-        case State.Loaded: {
+        case CreatePosterState.Loaded: {
             return (
                 <div className="poster-page">
                     <ImageWrapper src={imageUrl} />
@@ -79,7 +79,7 @@ const CreatePosterPage: React.FunctionComponent = () => {
                 </div>
             );
         }
-        case State.Error:
+        case CreatePosterState.Error:
         default: {
             return <div>Something went wrong...</div>;
         }

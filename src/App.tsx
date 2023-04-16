@@ -41,7 +41,8 @@ function App() {
             element={<MapHomePage />} />
           <Route path="/posters"
             element={<PosterFeed />} />
-          <Route path='/upload/poster-location' element={<UploadPosterLocation />}></Route>
+          <Route path='/upload/poster-location'
+            element={<UploadPosterLocation />} />
           <Route path="/admin/poster"
             element={<PosterCMSPage />} />
           <Route path="/admin/poster/new"

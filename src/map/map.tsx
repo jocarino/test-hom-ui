@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { MapContainer, Marker, TileLayer } from 'react-leaflet';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
+import { getPostersOnMap } from './firestore';
+import { PosterDoc } from '../types/poster';
+import MyMarkers from './myMarkers';
 
 const MyMap: React.FunctionComponent = () => {
     const defaultZoom = 13
@@ -9,6 +12,7 @@ const MyMap: React.FunctionComponent = () => {
         lat: number;
         lng: number;
     }>();
+    const [postersData, setPostersData] = useState<PosterDoc[]>([]);
     const [_, setError] = useState<GeolocationPositionError | null>(null);
 
     useEffect(() => {
@@ -25,12 +29,24 @@ const MyMap: React.FunctionComponent = () => {
             },
             (error) => () => {
                 setError(error)
-                console.log(error);
+                alert(error);
             }
         );
 
+        loadPosters();
         return () => navigator.geolocation.clearWatch(watchId);
     }, [JSON.stringify(location), map])
+
+    const loadPosters = useCallback(() => {
+        if (!map) return;
+        getPostersOnMap(map)
+            .then((posters) => {
+                setPostersData(posters)
+                console.log(postersData);
+            })
+            .catch((error) => console.log(error));
+    }, [map, postersData, setPostersData])
+
 
     const displayMap = useMemo(
         () => {
@@ -41,9 +57,9 @@ const MyMap: React.FunctionComponent = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={location} />
+                <MyMarkers location={location} posters={postersData} loadPosters={loadPosters} />
             </MapContainer >) : undefined)
-        }, [location]
+        }, [location, postersData, loadPosters]
     )
 
     if (!location) { return <h1>Loading...</h1> }
