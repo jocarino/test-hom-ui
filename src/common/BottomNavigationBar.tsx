@@ -3,7 +3,7 @@ import MapIcon from '@mui/icons-material/Map';
 import FilterFramesIcon from '@mui/icons-material/FilterFrames';
 import PersonIcon from '@mui/icons-material/Person';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NavigationLabel = {

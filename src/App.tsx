@@ -9,7 +9,7 @@ import CreatePosterPage from './poster/admin/createPoster';
 import { useStateValue } from './context/StateProvider';
 import { actionTypes } from './context/reducer';
 import { UserCredential } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Header from './header/Header';
 import BottomNavigationBar from './common/BottomNavigationBar';
 
