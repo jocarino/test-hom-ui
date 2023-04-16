@@ -1,11 +1,9 @@
-import { listAll, ref, StorageReference } from "firebase/storage";
-import { db, storage } from "../api/Firebase";
+import { db } from "../api/Firebase";
 import Poster from "./poster"
 import loadingGif from '../common/images/loading.gif'
 import { useEffect, useState } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
 import { PosterData, PosterDoc } from "./types";
-import BottomNavigationBar from "../common/BottomNavigationBar";
 
 const PosterFeed: React.FunctionComponent = () => {
 
