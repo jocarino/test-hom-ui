@@ -4,12 +4,20 @@ import FilterFramesIcon from '@mui/icons-material/FilterFrames';
 import PersonIcon from '@mui/icons-material/Person';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const NavigationLabel = {
     Map: { label: "Map", url: "/", icon: <MapIcon /> },
     Posters: { label: "Posters", url: "/posters", icon: <FilterFramesIcon /> },
     Profile: { label: "Profile", url: "/login", icon: <PersonIcon /> },
 }
+
+const CustomBottomNavigation = styled(BottomNavigation)`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+`
 
 const BottomNavigationBar: React.FC = () => {
     const [value, setValue] = useState(0)
@@ -20,7 +28,7 @@ const BottomNavigationBar: React.FC = () => {
     };
 
     return (
-        <BottomNavigation
+        <CustomBottomNavigation
             showLabels
             value={value}
             onChange={handleChange}
@@ -36,7 +44,7 @@ const BottomNavigationBar: React.FC = () => {
                     />
                 );
             })}
-        </BottomNavigation>
+        </CustomBottomNavigation>
     );
 };
 
