@@ -5,6 +5,7 @@ import loadingGif from '../common/images/loading.gif'
 import { useEffect, useState } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
 import { PosterData, PosterDoc } from "./types";
+import BottomNavigationBar from "../common/BottomNavigationBar";
 
 const PosterFeed: React.FunctionComponent = () => {
 
@@ -38,6 +39,7 @@ const PosterFeed: React.FunctionComponent = () => {
                         description={poster.description}
                     />
                 </li>
-            )}</>
+            )}
+        </>
 }
 export default PosterFeed

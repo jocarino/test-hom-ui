@@ -3,7 +3,9 @@ import MyMap from './map';
 
 const MapHomePage: React.FC = () => {
     return (
-        <MyMap />
+        <React.Fragment>
+            <MyMap />
+        </React.Fragment >
     );
 };
 
