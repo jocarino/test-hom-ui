@@ -6,18 +6,19 @@ import UploadPosterLocation from './map/uploadPosterLocation';
 import PosterFeed from './poster/posterFeed';
 import PosterCMSPage from './poster/admin/updatePoster';
 import CreatePosterPage from './poster/admin/createPoster';
-import Login from './login/Login';
 import { useStateValue } from './context/StateProvider';
 import { actionTypes } from './context/reducer';
 import { UserCredential } from 'firebase/auth';
 import { useEffect } from 'react';
 import Header from './header/Header';
-import CreateAccountWithEmail from './login/CreateAccountWithEmail';
+import BottomNavigationBar from './common/BottomNavigationBar';
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
 
-  useEffect(() => { userUpdate() }, [])
+  useEffect(() => {
+    userUpdate()
+  }, [])
 
   function userUpdate() {
     // get user from session storage
@@ -46,8 +47,8 @@ function App() {
           <Route path="/admin/poster/new"
             element={<CreatePosterPage />} />
         </Routes>
+        <BottomNavigationBar />
       </BrowserRouter>
-
     </>
   );
 

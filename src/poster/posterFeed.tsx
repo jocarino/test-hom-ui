@@ -1,5 +1,4 @@
-import { listAll, ref, StorageReference } from "firebase/storage";
-import { db, storage } from "../api/Firebase";
+import { db } from "../api/Firebase";
 import Poster from "./poster"
 import loadingGif from '../common/images/loading.gif'
 import { useEffect, useState } from "react";
@@ -38,6 +37,7 @@ const PosterFeed: React.FunctionComponent = () => {
                         description={poster.description}
                     />
                 </li>
-            )}</>
+            )}
+        </>
 }
 export default PosterFeed
