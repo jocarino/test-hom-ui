@@ -20,7 +20,9 @@ const CustomBottomNavigation = styled(BottomNavigation)`
 `
 
 const BottomNavigationBar: React.FC = () => {
-    const [value, setValue] = useState(0)
+    const currentPath = window.location.pathname
+    const indexOfPath = Object.values(NavigationLabel).map(item=>item.url).indexOf(currentPath)
+    const [value, setValue] = useState<number|null>(indexOfPath !== -1 ? indexOfPath: null)
     const navigate = useNavigate();
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -29,6 +31,7 @@ const BottomNavigationBar: React.FC = () => {
 
     return (
         <CustomBottomNavigation
+            className='bottom-navigation-bar'
             showLabels
             value={value}
             onChange={handleChange}
