@@ -8,6 +8,15 @@ import { PosterData, PosterDoc } from "../types/poster";
 const PosterFeed: React.FunctionComponent = () => {
 
     const [postersData, setPostersData] = useState<PosterDoc[]>([]);
+    const [bottomNavHeight, setBottomNavHeight] = useState(0);
+
+  useEffect(() => {
+    const bottomNavElement = document.querySelector('div.bottom-navigation-bar');
+    if (bottomNavElement) {
+      const height = bottomNavElement.clientHeight;
+      setBottomNavHeight(height);
+    }
+  }, []);
 
     useEffect(() => {
         const callerFunction = async () => {
@@ -27,7 +36,7 @@ const PosterFeed: React.FunctionComponent = () => {
     }, [])
 
     return postersData.length === 0 ? <img src={loadingGif} alt="loading..." /> :
-        <>
+        <div style={{ paddingBottom: bottomNavHeight }}>
             {postersData.map((poster) =>
                 <li key={poster.id}>
                     <Poster
@@ -38,6 +47,6 @@ const PosterFeed: React.FunctionComponent = () => {
                     />
                 </li>
             )}
-        </>
+        </div>
 }
 export default PosterFeed
