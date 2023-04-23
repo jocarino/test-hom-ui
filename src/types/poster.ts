@@ -18,3 +18,8 @@ export enum CreatePosterState {
     Error = 'error',
     NotFound = 'not-found'
 }
+
+export enum PosterMode {
+    Feed = 'feed',
+    ImageOnly = 'image-only'
+}

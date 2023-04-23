@@ -3,22 +3,27 @@ import Poster from "./poster"
 import loadingGif from '../common/images/loading.gif'
 import { useEffect, useState } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
-import { PosterData, PosterDoc } from "../types/poster";
+import { PosterData, PosterDoc, PosterMode } from "../types/poster";
+import { Link } from "react-router-dom";
 
 const PosterFeed: React.FunctionComponent = () => {
 
     const [postersData, setPostersData] = useState<PosterDoc[]>([]);
     const [bottomNavHeight, setBottomNavHeight] = useState(0);
 
-  useEffect(() => {
-    const bottomNavElement = document.querySelector('div.bottom-navigation-bar');
-    if (bottomNavElement) {
-      const height = bottomNavElement.clientHeight;
-      setBottomNavHeight(height);
-    }
-  }, []);
+    useEffect(() => {
+        const bottomNavElement = document.querySelector('div.bottom-navigation-bar');
+        if (bottomNavElement) {
+            const height = bottomNavElement.clientHeight;
+            setBottomNavHeight(height);
+        }
+    }, []);
 
     useEffect(() => {
+        const savePostersDataToCache = (postersData: PosterDoc[]) => {
+            const postersDataString = JSON.stringify(postersData);
+            localStorage.setItem('postersData', postersDataString);
+        }
         const callerFunction = async () => {
             const postersDocData: PosterDoc[] = [];
             const response = (await getDocs(query(collection(db, 'posters'))));
@@ -29,6 +34,7 @@ const PosterFeed: React.FunctionComponent = () => {
             });
 
             setPostersData(postersDocData)
+            savePostersDataToCache(postersDocData)
 
 
         }
@@ -37,14 +43,17 @@ const PosterFeed: React.FunctionComponent = () => {
 
     return postersData.length === 0 ? <img src={loadingGif} alt="loading..." /> :
         <div style={{ paddingBottom: bottomNavHeight }}>
-            {postersData.map((poster) =>
+            {postersData.map((poster: PosterDoc) =>
                 <li key={poster.id}>
-                    <Poster
-                        id={`poster_${poster.id}`}
-                        posterId={poster.id}
-                        title={poster.title}
-                        description={poster.description}
-                    />
+                    <Link to={`/poster/:${poster.id}`}>
+                        <Poster
+                            mode={PosterMode.Feed}
+                            id={`poster_${poster.id}`}
+                            posterId={poster.id}
+                            title={poster.title}
+                            description={poster.description}
+                        />
+                    </Link>
                 </li>
             )}
         </div>
