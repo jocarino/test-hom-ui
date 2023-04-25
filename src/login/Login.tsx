@@ -1,3 +1,5 @@
+import { Button, Card, CardContent, Divider, TextField } from "@mui/material";
+import { Google } from '@mui/icons-material';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, UserCredential } from "firebase/auth";
 import React, { useState, FormEvent } from "react";
 import { Link, NavigateFunction, useNavigate } from "react-router-dom";
@@ -5,18 +7,27 @@ import { auth, googleProvider } from "../api/Firebase"
 import { actionTypes } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
 import { setUser } from "./utils";
+import "./Login.css";
+
+export type Errors = {
+  email: string | null;
+  password: string | null;
+}
 
 function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errors, setErrors] = useState<Errors>({ email: null, password: null });
   const [{ user }, dispatch] = useStateValue();
   const navigate: NavigateFunction = useNavigate();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setErrors({ email: null, password: null });
     setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setErrors({ email: null, password: null });
     setPassword(e.target.value);
   };
 
@@ -27,7 +38,16 @@ function Login() {
         setUser(dispatch, result, navigate);
       }
       )
-      .catch(error => alert(error.message));
+      .catch(error => {
+        if (error.code === "auth/user-not-found") {
+          setErrors({ email: "Email not found", password: null });
+        } else if (error.code === "auth/wrong-password") {
+          setErrors({ email: null, password: "Password is incorrect" });
+        } else {
+          setErrors({ email: "", password: "" });
+          alert("Unexpected error, please try again later")
+        }
+      });
   }
   const handleGoogleLogin = () => {
     signInWithPopup(auth, googleProvider)
@@ -56,35 +76,47 @@ function Login() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleEmailLogin}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={handleEmailChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        <button type="submit">Log in</button>
-      </form>
-      <p>or</p>
-      <button onClick={handleGoogleLogin}>Sign in with Google</button>
-      <hr />
-      <p>You don't have an account yet? <Link to="/createAccountWithEmailAndPassword">Create account with email</Link></p>
-    </div>
+    <div id="login-container">
+      <Card sx={{ width: "90%", height: "60%" }} >
+        <CardContent>
+          <h1>Log in</h1>
+          <form onSubmit={handleEmailLogin}>
+            <TextField
+              type="email"
+              id="email"
+              name="email"
+              label="Email"
+              margin="normal"
+              error={!!errors.email}
+              helperText={errors.email}
+              value={email}
+              onChange={handleEmailChange}
+            />
+            <TextField
+              type="password"
+              id="password"
+              name="password"
+              label="Password"
+              margin="normal"
+              error={!!errors.password}
+              helperText={errors.password}
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <br />
+            <Button variant="contained" size="large" type="submit">Log in</Button>
+          </form>
+          <br />
+          <p>You don't have an account yet? <Link to="/createAccountWithEmailAndPassword">Create account with email</Link></p>
+          <br />
+          <Divider variant="middle" />
+          <br />
+          <Button variant="outlined" size="large" startIcon={<Google />} onClick={handleGoogleLogin}>Sign in with Google</Button>
+          <br />
+
+        </CardContent>
+      </Card>
+    </div >
   );
 };
 
