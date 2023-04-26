@@ -8,9 +8,13 @@ interface Props {
     className?: string;
     image: string;
     altText: string;
+    size?: {
+        width?: number;
+        height?: number;
+    };
 }
 
-const ImageComponent: React.FC<Props> = ({ id, className, image, altText }) => {
+const ImageComponent: React.FC<Props> = ({ id, className, image, altText, size }) => {
     let imageSrc: string;
     switch (image) {
         case 'monalisa':
@@ -26,7 +30,7 @@ const ImageComponent: React.FC<Props> = ({ id, className, image, altText }) => {
             imageSrc = image;
     }
     return (
-        <img id={id} className={className} src={imageSrc} alt={altText} />
+        <img id={id} className={className} src={imageSrc} alt={altText} height={size?.height} width={size?.width} />
     );
 }
 
