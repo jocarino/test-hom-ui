@@ -1,4 +1,4 @@
-import { ref, StorageReference, getDownloadURL } from "@firebase/storage";
+import { ref, getDownloadURL } from "@firebase/storage";
 import React, { useEffect, useState } from "react";
 import { storage } from "../api/Firebase";
 import ImageComponent from "../common/imageComponent";

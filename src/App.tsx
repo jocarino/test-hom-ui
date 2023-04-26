@@ -14,6 +14,7 @@ import Header from './header/Header';
 import BottomNavigationBar from './common/BottomNavigationBar';
 import Login from './login/Login';
 import CreateAccountWithEmail from './login/CreateAccountWithEmail';
+import PosterPage from './poster/posterPage';
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -47,6 +48,8 @@ function App() {
             element={<CreateAccountWithEmail />} />
           <Route path="/posters"
             element={<PosterFeed />} />
+          <Route path='/poster/:name'
+            element={<PosterPage />} />
           <Route path='/upload/poster-location'
             element={<UploadPosterLocation />} />
           <Route path="/admin/poster"
