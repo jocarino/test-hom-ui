@@ -16,8 +16,7 @@ import Login from './login/Login';
 import CreateAccountWithEmail from './login/CreateAccountWithEmail';
 import PosterPage from './poster/posterPage';
 import PosterCollection from './poster/posterCollection';
-import PosterPage from './poster/posterPage';
-
+import Profile from './profile/Profile';
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -49,6 +48,8 @@ function App() {
             element={<Login />} />
           <Route path="/createAccountWithEmailAndPassword"
             element={<CreateAccountWithEmail />} />
+          <Route path="/profile"
+            element={<Profile />} />
           <Route path="/posters"
             element={<PosterFeed />} />
           <Route path='/poster/:name'
