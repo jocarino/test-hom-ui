@@ -10,7 +10,7 @@
 }
 .MuiCardContent-root {
     display: flex;
-    flex-direction: column;
+    flex-flow: column wrap;
     justify-content: center;
     align-items: center;
 }

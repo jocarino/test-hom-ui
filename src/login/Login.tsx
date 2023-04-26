@@ -77,7 +77,7 @@ function Login() {
 
   return (
     <div id="login-container">
-      <Card sx={{ width: "90%", height: "60%" }} >
+      <Card sx={{ width: "90%" }} >
         <CardContent>
           <h1>Log in</h1>
           <form onSubmit={handleEmailLogin}>

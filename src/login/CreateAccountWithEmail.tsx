@@ -48,7 +48,7 @@ function CreateAccountWithEmail() {
     };
     return (
         <div id="login-container">
-            <Card sx={{ width: "90%", height: "60%" }} >
+            <Card sx={{ width: "90%" }} >
                 <CardContent>
                     <h1>Create Account</h1>
                     <form onSubmit={createAccount}>
