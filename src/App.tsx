@@ -12,6 +12,8 @@ import { UserCredential } from 'firebase/auth';
 import { useEffect } from 'react';
 import Header from './header/Header';
 import BottomNavigationBar from './common/BottomNavigationBar';
+import Login from './login/Login';
+import CreateAccountWithEmail from './login/CreateAccountWithEmail';
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -39,6 +41,10 @@ function App() {
         <Routes>
           <Route path="/"
             element={<MapHomePage />} />
+          <Route path="/login"
+            element={<Login />} />
+          <Route path="/createAccountWithEmailAndPassword"
+            element={<CreateAccountWithEmail />} />
           <Route path="/posters"
             element={<PosterFeed />} />
           <Route path='/upload/poster-location'
