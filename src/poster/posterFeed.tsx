@@ -3,7 +3,7 @@ import Poster from "./poster"
 import loadingGif from '../common/images/loading.gif'
 import { useEffect, useState } from "react";
 import { collection, getDocs, query } from "firebase/firestore";
-import { PosterData, PosterDoc } from "../types/poster";
+import { PosterData, PosterDoc, PosterMode } from "../types/poster";
 import { Link } from "react-router-dom";
 
 const PosterFeed: React.FunctionComponent = () => {
@@ -47,6 +47,7 @@ const PosterFeed: React.FunctionComponent = () => {
                 <li key={poster.id}>
                     <Link to={`/poster/:${poster.id}`}>
                         <Poster
+                            mode={PosterMode.Feed}
                             id={`poster_${poster.id}`}
                             posterId={poster.id}
                             title={poster.title}

@@ -4,15 +4,17 @@ import { storage } from "../api/Firebase";
 import ImageComponent from "../common/imageComponent";
 import './poster.css';
 import loadingGif from '../common/images/loading.gif'
+import { PosterMode } from "../types/poster";
 
 interface Props {
+    mode: PosterMode;
     id: string;
     posterId: string;
     title: string;
     description: string;
 }
 
-const Poster: React.FunctionComponent<Props> = ({ id, posterId, title, description }) => {
+const Poster: React.FunctionComponent<Props> = ({ mode, id, posterId, title, description }) => {
     const [checked, setChecked] = useState(false);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const imageRef = ref(storage, `/posters/${posterId}`)
@@ -34,7 +36,7 @@ const Poster: React.FunctionComponent<Props> = ({ id, posterId, title, descripti
         fetchImage();
     }, [imageRef]);
 
-    return (
+    return mode === PosterMode.Feed ? (
         <div key={id} id={id} className="poster_view">
             <h1>{title}</h1>
             <p>{description}</p>
@@ -52,7 +54,14 @@ const Poster: React.FunctionComponent<Props> = ({ id, posterId, title, descripti
             />
             <button onClick={toggleCheck}>{checked ? 'Not Seen' : 'Seen'}</button>
         </div>
-    )
+    ) : (
+        <ImageComponent
+            id={`posterimage_${imageRef.name}`}
+            className="poster_img"
+            image={imageUrl || loadingGif}
+            altText="Example"
+        />
+    );
 }
 
 export default Poster;
