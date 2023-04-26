@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React from "react";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { actionTypes } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
 import "./Header.css";
@@ -25,6 +25,15 @@ function Header() {
         sessionStorage.removeItem(process.env.REACT_APP_USER_CREDENTIALS || '');
     }
 
+    const handleLogin = () => {
+        // set pageIdx to 2 (login page)
+        // TODO: this is a hack, find a better way to do this
+        dispatch({
+            type: actionTypes.SET_PAGEIDX,
+            pageIdx: 2
+        });
+    }
+
     return (
         <div id="header-root">
             <div />
@@ -39,7 +48,7 @@ function Header() {
             <div>
                 {!user ? (
                     <Link to="/login">
-                        <SignInStyledButton variant="outlined" size="large">Sign In</SignInStyledButton>
+                        <SignInStyledButton variant="outlined" size="large" onClick={handleLogin}>Sign In</SignInStyledButton>
                     </Link>
                 ) : (
                     <SignInStyledButton variant="outlined" size="large" onClick={signOut}>Sign Out</SignInStyledButton>

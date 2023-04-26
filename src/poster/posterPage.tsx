@@ -2,7 +2,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../api/Firebase';
-import { PosterData, PosterDoc } from '../types/poster';
+import { PosterData, PosterDoc, PosterMode } from '../types/poster';
 import Poster from './poster';
 
 const PosterPage: React.FunctionComponent = () => {
@@ -42,6 +42,7 @@ const PosterPage: React.FunctionComponent = () => {
             </h1>
             <br />
             <Poster
+                mode={PosterMode.Feed}
                 id={`poster_${poster.id}`}
                 posterId={poster.id}
                 title={poster.title}
