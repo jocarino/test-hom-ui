@@ -21,5 +21,6 @@ export enum CreatePosterState {
 
 export enum PosterMode {
     Feed = 'feed',
+    Page = 'page',
     ImageOnly = 'image-only'
 }

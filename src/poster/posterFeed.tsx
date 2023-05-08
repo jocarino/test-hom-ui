@@ -44,17 +44,16 @@ const PosterFeed: React.FunctionComponent = () => {
     return postersData.length === 0 ? <img src={loadingGif} alt="loading..." /> :
         <div style={{ paddingBottom: bottomNavHeight }}>
             {postersData.map((poster: PosterDoc) =>
-                <li key={poster.id}>
-                    <Link to={`/poster/:${poster.id}`}>
+                <div key={poster.id}>
                         <Poster
                             mode={PosterMode.Feed}
                             id={`poster_${poster.id}`}
                             posterId={poster.id}
                             title={poster.title}
                             description={poster.description}
+                            coordinates={poster.coordinates}
                         />
-                    </Link>
-                </li>
+                </div>
             )}
         </div>
 }

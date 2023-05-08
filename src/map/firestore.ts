@@ -13,7 +13,7 @@ export const getPostersOnMap = async (map: L.Map | null): Promise<PosterDoc[]> =
     const minLat: number = bounds.getSouth();
     const maxLng: number = bounds.getEast();
     const minLng: number = bounds.getWest();
-    console.log('coordentate', maxLat, minLat, maxLng, minLng);
+    console.log('coordinates', maxLat, minLat, maxLng, minLng);
     const collectionRef: CollectionReference<DocumentData> = collection(db, 'posters');
     const q: Query<DocumentData> = query(collectionRef,
         where('coordinates', '<=', new GeoPoint(maxLat, maxLng)),

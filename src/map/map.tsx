@@ -14,6 +14,10 @@ const MyMap: React.FunctionComponent = () => {
     }>();
     const [postersData, setPostersData] = useState<PosterDoc[]>([]);
     const [_, setError] = useState<GeolocationPositionError | null>(null);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const [posterCoordinates, setPosterCoordinates] = useState(urlParams.has('latitude') && urlParams.has('longitude') ?
+        { lat: Number(urlParams.get('latitude')), lng: Number(urlParams.get('longitude')) } : undefined)
 
     useEffect(() => {
         const watchId = navigator.geolocation.watchPosition(
@@ -22,9 +26,13 @@ const MyMap: React.FunctionComponent = () => {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                 });
-                if (map && location) {
+                // Set map view depending on whether we're coming from a poster discovery or not
+                if (map && location && !posterCoordinates) {
                     map.setView([location.lat, location.lng])
                     console.log(`location ${location.lat},${location.lng}`);
+                }
+                else if (map && posterCoordinates){
+                    map.setView([posterCoordinates.lat, posterCoordinates.lng])
                 }
             },
             (error) => () => {
@@ -66,7 +74,14 @@ const MyMap: React.FunctionComponent = () => {
 
     const reCenterButton = (map: L.Map) => {
         const onClick = () => {
-            map.setView([location.lat, location.lng], defaultZoom)
+            // Remove poster coordinates from the url params
+            if(posterCoordinates){
+                window.history.pushState(null, '', '/');
+                setPosterCoordinates(undefined)
+            }
+            map.setView(
+                [location.lat, location.lng], defaultZoom)
+
         }
         return (
             <p>
