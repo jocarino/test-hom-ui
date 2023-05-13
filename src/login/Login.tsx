@@ -105,15 +105,13 @@ function Login() {
             />
             <br />
             <Button variant="contained" size="large" type="submit">Log in</Button>
-          </form>
-          <br />
-          <p>You don't have an account yet? <Link to="/createAccountWithEmailAndPassword">Create account with email</Link></p>
-          <br />
-          <Divider variant="middle" />
-          <br />
+          <hr style={{width:'50px', margin:'16px 0'}}></hr>
           <Button variant="outlined" size="large" startIcon={<Google />} onClick={handleGoogleLogin}>Sign in with Google</Button>
-          <br />
-
+          <hr style={{width:'50px', margin:'16px 0'}}></hr>
+          </form>
+          <p style={{display:'flex', flexDirection:'column', alignItems:'center', margin:'0'}}>
+            You don't have an account yet? <Link to="/createAccountWithEmailAndPassword">Create account with email</Link>
+          </p>
         </CardContent>
       </Card>
     </div >
