@@ -42,7 +42,7 @@ const PosterPage: React.FunctionComponent = () => {
             </h1>
             <br />
             <Poster
-                mode={PosterMode.Feed}
+                mode={PosterMode.Page}
                 id={`poster_${poster.id}`}
                 posterId={poster.id}
                 title={poster.title}

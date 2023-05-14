@@ -1,18 +1,16 @@
 #login-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    background-color: aliceblue;
     
-    height: 100vh;
+    height: 100%;
     width: 100vw;
 }
 .MuiCardContent-root {
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
-    align-items: center;
 }
 form {
     display: flex;

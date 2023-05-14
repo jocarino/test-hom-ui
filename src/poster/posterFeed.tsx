@@ -42,19 +42,18 @@ const PosterFeed: React.FunctionComponent = () => {
     }, [])
 
     return postersData.length === 0 ? <img src={loadingGif} alt="loading..." /> :
-        <div style={{ paddingBottom: bottomNavHeight }}>
+        <div style={{ paddingBottom: bottomNavHeight, width: "100%", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {postersData.map((poster: PosterDoc) =>
-                <li key={poster.id}>
-                    <Link to={`/poster/:${poster.id}`}>
-                        <Poster
-                            mode={PosterMode.Feed}
-                            id={`poster_${poster.id}`}
-                            posterId={poster.id}
-                            title={poster.title}
-                            description={poster.description}
-                        />
-                    </Link>
-                </li>
+                <div key={poster.id}>
+                    <Poster
+                        mode={PosterMode.Feed}
+                        id={`poster_${poster.id}`}
+                        posterId={poster.id}
+                        title={poster.title}
+                        description={poster.description}
+                        coordinates={poster.coordinates}
+                    />
+                </div>
             )}
         </div>
 }
