@@ -8,6 +8,7 @@ import { actionTypes } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
 import { setUser } from "./utils";
 import "./Login.css";
+import GenericPageContainer from "../common/GenericPageContainer";
 
 export type Errors = {
   email: string | null;
@@ -76,45 +77,47 @@ function Login() {
   };
 
   return (
-    <div id="login-container">
-      <Card sx={{ width: "90%" }} >
-        <CardContent>
-          <h1>Log in</h1>
-          <form onSubmit={handleEmailLogin}>
-            <TextField
-              type="email"
-              id="email"
-              name="email"
-              label="Email"
-              margin="normal"
-              error={!!errors.email}
-              helperText={errors.email}
-              value={email}
-              onChange={handleEmailChange}
-            />
-            <TextField
-              type="password"
-              id="password"
-              name="password"
-              label="Password"
-              margin="normal"
-              error={!!errors.password}
-              helperText={errors.password}
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <br />
-            <Button variant="contained" size="large" type="submit">Log in</Button>
-          <hr style={{width:'50px', margin:'16px 0'}}></hr>
-          <Button variant="outlined" size="large" startIcon={<Google />} onClick={handleGoogleLogin}>Sign in with Google</Button>
-          <hr style={{width:'50px', margin:'16px 0'}}></hr>
-          </form>
-          <p style={{display:'flex', flexDirection:'column', alignItems:'center', margin:'0'}}>
-            You don't have an account yet? <Link to="/createAccountWithEmailAndPassword">Create account with email</Link>
-          </p>
-        </CardContent>
-      </Card>
-    </div >
+    <GenericPageContainer>
+      <div id="login-container">
+        <Card sx={{ width: "90%" }} >
+          <CardContent>
+            <h1>Log in</h1>
+            <form onSubmit={handleEmailLogin}>
+              <TextField
+                type="email"
+                id="email"
+                name="email"
+                label="Email"
+                margin="normal"
+                error={!!errors.email}
+                helperText={errors.email}
+                value={email}
+                onChange={handleEmailChange}
+              />
+              <TextField
+                type="password"
+                id="password"
+                name="password"
+                label="Password"
+                margin="normal"
+                error={!!errors.password}
+                helperText={errors.password}
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <br />
+              <Button variant="contained" size="large" type="submit">Log in</Button>
+              <hr style={{ width: '50px', margin: '16px 0' }}></hr>
+              <Button variant="outlined" size="large" startIcon={<Google />} onClick={handleGoogleLogin}>Sign in with Google</Button>
+              <hr style={{ width: '50px', margin: '16px 0' }}></hr>
+            </form>
+            <p style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0' }}>
+              You don't have an account yet? <Link to="/createAccountWithEmailAndPassword">Create account with email</Link>
+            </p>
+          </CardContent>
+        </Card>
+      </div >
+    </GenericPageContainer>
   );
 };
 

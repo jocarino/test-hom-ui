@@ -4,6 +4,7 @@ import L from 'leaflet';
 import { getPostersOnMap } from './firestore';
 import { PosterDoc } from '../types/poster';
 import MyMarkers from './myMarkers';
+import GenericPageContainer from '../common/GenericPageContainer';
 
 const MyMap: React.FunctionComponent = () => {
     const defaultZoom = 13
@@ -31,7 +32,7 @@ const MyMap: React.FunctionComponent = () => {
                     map.setView([location.lat, location.lng])
                     console.log(`location ${location.lat},${location.lng}`);
                 }
-                else if (map && posterCoordinates){
+                else if (map && posterCoordinates) {
                     map.setView([posterCoordinates.lat, posterCoordinates.lng])
                 }
             },
@@ -75,7 +76,7 @@ const MyMap: React.FunctionComponent = () => {
     const reCenterButton = (map: L.Map) => {
         const onClick = () => {
             // Remove poster coordinates from the url params
-            if(posterCoordinates){
+            if (posterCoordinates) {
                 window.history.pushState(null, '', '/');
                 setPosterCoordinates(undefined)
             }
@@ -91,11 +92,10 @@ const MyMap: React.FunctionComponent = () => {
     }
 
     return (
-        <>
-            <h1>Test</h1>
+        <GenericPageContainer>
             {displayMap}
             {map ? reCenterButton(map) : null}
-        </>
+        </GenericPageContainer>
     );
 };
 
