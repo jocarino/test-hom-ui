@@ -5,6 +5,7 @@ import { db, storage } from '../../api/Firebase'; // Import your Firebase config
 import { PosterData as Poster, PosterData, CreatePosterState } from '../../types/poster';
 import { useLocation } from 'react-router-dom';
 import { ImageWrapper } from '../posterSC';
+import GenericPageContainer from '../../common/GenericPageContainer';
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -87,30 +88,32 @@ const PosterCMSPage: React.FunctionComponent = () => {
         }
         case CreatePosterState.Loaded: {
             return (
-                <div className="poster-page">
-                    <div>
-                        <ImageWrapper src={imageUrl} />
-                    </div>
+                <GenericPageContainer>
+                    <div className="poster-page">
+                        <div>
+                            <ImageWrapper src={imageUrl} />
+                        </div>
 
-                    <form className="form-container" onSubmit={handleSubmit}>
-                        <label>
-                            Title:
-                            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        </label>
-                        <p></p>
-                        <label>
-                            Description:
-                            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-                        </label>
-                        <p></p>
-                        <label>
-                            Image:
-                            <input type="file" onChange={handleImageUpload} />
-                        </label>
-                        <p></p>
-                        <button type="submit">Update Poster</button>
-                    </form>
-                </div>
+                        <form className="form-container" onSubmit={handleSubmit}>
+                            <label>
+                                Title:
+                                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                            </label>
+                            <p></p>
+                            <label>
+                                Description:
+                                <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                            </label>
+                            <p></p>
+                            <label>
+                                Image:
+                                <input type="file" onChange={handleImageUpload} />
+                            </label>
+                            <p></p>
+                            <button type="submit">Update Poster</button>
+                        </form>
+                    </div>
+                </GenericPageContainer>
             );
         }
         case CreatePosterState.NotFound: {

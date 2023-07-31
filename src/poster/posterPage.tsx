@@ -2,6 +2,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../api/Firebase';
+import GenericPageContainer from '../common/GenericPageContainer';
 import { PosterData, PosterDoc, PosterMode } from '../types/poster';
 import Poster from './poster';
 
@@ -36,19 +37,17 @@ const PosterPage: React.FunctionComponent = () => {
     }, [name]);
 
     return (
-        <div>
-            <h1>
-                Poster Page
-            </h1>
-            <br />
+        <GenericPageContainer>
             <Poster
                 mode={PosterMode.Page}
                 id={`poster_${poster.id}`}
                 posterId={poster.id}
                 title={poster.title}
                 description={poster.description}
+                coordinates={poster.coordinates}
             />
-        </div>
+
+        </GenericPageContainer>
     )
 }
 

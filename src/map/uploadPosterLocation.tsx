@@ -1,8 +1,8 @@
-import React, { SelectHTMLAttributes, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../api/Firebase";
 import { doc, updateDoc, GeoPoint, getDocs, query, collection } from "firebase/firestore";
 import { isNullOrUndefined } from "../utils/utils";
-import { PosterDoc, PosterLocation } from "../types/poster";
+import { PosterLocation } from "../types/poster";
 
 
 const UploadPosterLocation: React.FunctionComponent = () => {
@@ -63,7 +63,7 @@ const UploadPosterLocation: React.FunctionComponent = () => {
                 <label>
                     Poster name:
                     <select name="poster-names" id="poster-names" onChange={e => setPosterName(e.target.value)}>
-                        {postersList && postersList.map((posterName)=>{
+                        {postersList && postersList.map((posterName) => {
                             return <option value={posterName}>{posterName}</option>
                         })}
                     </select>
