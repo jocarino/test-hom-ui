@@ -15,6 +15,7 @@ export type PosterDoc = PosterData & { id: string }
 export enum CreatePosterState {
     Loading = 'loading',
     Loaded = 'loaded',
+    CreateNew = 'create-new',
     Error = 'error',
     NotFound = 'not-found'
 }

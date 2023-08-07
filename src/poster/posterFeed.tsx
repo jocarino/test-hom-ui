@@ -8,28 +8,14 @@ import GenericPageContainer from "../common/GenericPageContainer";
 import { useStateValue } from "../context/StateProvider";
 import { Box, Tabs, Tab } from "@mui/material";
 import { a11yProps, TabPanel } from "./posterFeedTab";
-import { getUserInfo, range } from "../utils/utils";
+import { range } from "../utils/utils";
 
 const PosterFeed: React.FunctionComponent = () => {
-    const [{ user, userInfo }, dispatch] = useStateValue();
+    const [{ userInfo }] = useStateValue();
 
 
     const [postersData, setPostersData] = useState<PosterDoc[]>([]);
     const [currentTab, setCurrentTab] = useState<number>(0);
-
-
-    useEffect(() => {
-        console.log('user', user?.uid)
-
-        const callerFunction = async () => {
-            const fetchedUserInfo = await getUserInfo(user?.uid)
-            dispatch({
-                type: 'SET_USER_INFO',
-                userInfo: fetchedUserInfo
-            })
-        }
-        callerFunction()
-    }, [user])
 
     useEffect(() => {
         const savePostersDataToCache = (postersData: PosterDoc[]) => {

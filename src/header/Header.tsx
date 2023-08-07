@@ -22,6 +22,10 @@ function Header() {
             type: actionTypes.SET_USER,
             user: null
         });
+        dispatch({
+            type: actionTypes.SET_USER_INFO,
+            userInfo: null
+        })
         sessionStorage.removeItem(process.env.REACT_APP_USER_CREDENTIALS || '');
     }
 

@@ -7,7 +7,6 @@ import { useStateValue } from "../context/StateProvider";
 import { Errors } from "./Login";
 import { setUser } from "./utils";
 
-
 function CreateAccountWithEmail() {
 
     const [email, setEmail] = useState<string>("");

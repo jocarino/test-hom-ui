@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../api/Firebase";
+import { db } from "../../api/Firebase";
 import { doc, updateDoc, GeoPoint, getDocs, query, collection } from "firebase/firestore";
-import { isNullOrUndefined } from "../utils/utils";
-import { PosterLocation } from "../types/poster";
+import { isNullOrUndefined } from "../../utils/utils";
+import { PosterLocation } from "../../types/poster";
+import AdminPageContainer from "../../admin/adminPageContainer";
+import { useStateValue } from "../../context/StateProvider";
 
 
 const UploadPosterLocation: React.FunctionComponent = () => {
     const [posterValidation, setPosterValidation] = useState({ showMessage: false, isValid: false, message: '' })
     const [postersList, setPostersList] = useState<string[] | undefined>(undefined)
     const [posterName, setPosterName] = useState<string | undefined>(undefined)
+    const [{ userInfo }] = useStateValue();
 
     useEffect(() => {
         const callerFunction = async () => {
@@ -59,18 +62,20 @@ const UploadPosterLocation: React.FunctionComponent = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Poster name:
-                    <select name="poster-names" id="poster-names" onChange={e => setPosterName(e.target.value)}>
-                        {postersList && postersList.map((posterName) => {
-                            return <option value={posterName}>{posterName}</option>
-                        })}
-                    </select>
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
-            {posterValidation.showMessage ? <p>{posterValidation.message}</p> : undefined}
+            <AdminPageContainer userInfo={userInfo}>
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Poster name:
+                        <select name="poster-names" id="poster-names" onChange={e => setPosterName(e.target.value)}>
+                            {postersList && postersList.map((posterName) => {
+                                return <option value={posterName}>{posterName}</option>
+                            })}
+                        </select>
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+                {posterValidation.showMessage ? <p>{posterValidation.message}</p> : undefined}
+            </AdminPageContainer>
         </>
     )
 }

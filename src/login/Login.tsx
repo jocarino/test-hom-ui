@@ -1,14 +1,13 @@
 import { Button, Card, CardContent, Divider, TextField } from "@mui/material";
 import { Google } from '@mui/icons-material';
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, UserCredential } from "firebase/auth";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import React, { useState, FormEvent } from "react";
 import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import { auth, googleProvider } from "../api/Firebase"
-import { actionTypes } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
-import { setUser } from "./utils";
 import "./Login.css";
 import GenericPageContainer from "../common/GenericPageContainer";
+import { setUser } from "./utils";
 
 export type Errors = {
   email: string | null;

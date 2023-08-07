@@ -1,10 +1,11 @@
+import Button from "@mui/material/Button";
 import React, { useEffect } from "react";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
 import GenericPageContainer from "../common/GenericPageContainer";
 import { useStateValue } from "../context/StateProvider";
 
 const Profile = () => {
-    const [{ user }] = useStateValue();
+    const [{ user, userInfo }] = useStateValue();
     const navigate: NavigateFunction = useNavigate();
 
 
@@ -18,8 +19,17 @@ const Profile = () => {
     return (
         <GenericPageContainer>
             <h1>Profile</h1>
-            <h2>{user?.email}</h2>
-            <h2>{user?.displayName}</h2>
+            <p>{user?.email}</p>
+            <p>{user?.displayName}</p>
+            {userInfo && userInfo.accessLevel > 1 ? (
+                <div>
+                    <Link to="/admin">
+                        <p>Admin Dashboard</p>
+                    </Link>
+                </div>
+            ) : (
+                <></>
+            )}
         </GenericPageContainer>
     );
 };
