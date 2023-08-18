@@ -11,7 +11,6 @@ const AdminPageContainer: React.FC<Props> = ({ userInfo, children }) => {
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
 
     useEffect(() => {
-        console.log('Handleing userInfo')
         if (userInfo != null && userInfo.accessLevel > 1) {
             setIsAdmin(true)
         } else {

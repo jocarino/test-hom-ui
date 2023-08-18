@@ -18,9 +18,7 @@ export const setUser = async (dispatch: any, result: UserCredential, navigate: N
   }
 
 const fetchUserInfo = async (user: User, dispatch: any) => {
-    console.log('fetchUserInfo', user?.uid, dispatch)
     const fetchedUserInfo = await getUserInfo(user?.uid)
-    console.log('fetchedUserInfo', fetchedUserInfo)
     dispatch({
         type: 'SET_USER_INFO',
         userInfo: fetchedUserInfo
@@ -34,7 +32,6 @@ const fetchUserInfo = async (user: User, dispatch: any) => {
  * @returns userInfo
  */
 export const getUserInfo = async (uid: string) : Promise<UserInfo> => {
-    console.log("uid", uid)
     if (isNullOrUndefined(uid)) {
         throw new Error("uid is null or undefined")
     }
@@ -44,13 +41,10 @@ export const getUserInfo = async (uid: string) : Promise<UserInfo> => {
         throw new Error("data is null or undefined")
     }
     const viewed: DocumentReference[] = data?.viewed as DocumentReference[]
-    console.log("response", data?.viewed)
 
     let viewedPosters: string[] = []
     viewed.forEach(v => v.id && viewedPosters.push(v.id))
 
-    console.log("viewdPosters", viewedPosters)
-    
     let accessLevel: number = data?.accessLevel as number 
 
     return {viewedPosters: viewedPosters, accessLevel: accessLevel} as UserInfo
