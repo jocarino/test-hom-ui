@@ -2,10 +2,9 @@ import './App.css';
 import MapHomePage from './map/mapHomePage';
 import 'leaflet/dist/leaflet.css'
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import UploadPosterLocation from './map/uploadPosterLocation';
+import UploadPosterLocation from './map/admin/uploadPosterLocation';
 import PosterFeed from './poster/posterFeed';
 import PosterCMSPage from './poster/admin/updatePoster';
-import CreatePosterPage from './poster/admin/createPoster';
 import { useStateValue } from './context/StateProvider';
 import { actionTypes } from './context/reducer';
 import { UserCredential } from 'firebase/auth';
@@ -17,9 +16,10 @@ import CreateAccountWithEmail from './login/CreateAccountWithEmail';
 import PosterPage from './poster/posterPage';
 import PosterCollection from './poster/posterCollection';
 import Profile from './profile/Profile';
+import AdminDashboard from './admin/adminDashboard';
 
 function App() {
-  const [{ user }, dispatch] = useStateValue();
+  const [dispatch] = useStateValue();
 
   useEffect(() => {
     userUpdate()
@@ -56,12 +56,12 @@ function App() {
             element={<PosterPage />} />
           <Route path="/posters-collection"
             element={<PosterCollection />} />
+          <Route path='/admin'
+            element={<AdminDashboard />} />
           <Route path='/admin/poster/location'
             element={<UploadPosterLocation />} />
           <Route path="/admin/poster"
             element={<PosterCMSPage />} />
-          <Route path="/admin/poster/new"
-            element={<CreatePosterPage />} />
         </Routes>
         <BottomNavigationBar />
       </BrowserRouter>

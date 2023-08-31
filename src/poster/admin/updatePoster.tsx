@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from '@firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc } from '@firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import React, { useState, useEffect } from 'react';
 import { db, storage } from '../../api/Firebase'; // Import your Firebase configuration
@@ -6,6 +6,10 @@ import { PosterData as Poster, PosterData, CreatePosterState } from '../../types
 import { useLocation } from 'react-router-dom';
 import { ImageWrapper } from '../posterSC';
 import GenericPageContainer from '../../common/GenericPageContainer';
+import { useNavigate } from 'react-router-dom';
+import AdminPageContainer from '../../admin/adminPageContainer';
+import { useStateValue } from '../../context/StateProvider';
+
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -13,11 +17,13 @@ function useQuery() {
 
 
 const PosterCMSPage: React.FunctionComponent = () => {
+    const [{ userInfo }] = useStateValue();
     const [state, setState] = useState<string>(CreatePosterState.Loading);
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [image, setImage] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string>('')
+    const navigate = useNavigate();
 
     const query = useQuery();
     const posterId = query.get('posterId') || null;
@@ -26,7 +32,7 @@ const PosterCMSPage: React.FunctionComponent = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (!posterId) {
-                setState(CreatePosterState.NotFound)
+                setState(CreatePosterState.CreateNew)
                 return
             }
             const posterRef = doc(db, 'posters', posterId)
@@ -57,6 +63,31 @@ const PosterCMSPage: React.FunctionComponent = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setState(CreatePosterState.Loading);
+
+        // Upload the new image to Firebase Storage, if available
+        if (image && title.length > 0) {
+            const posterId = title.replace(/\s/g, '')
+            const newImageRef = ref(storage, `posters/${posterId}`);
+            const uploadImageResponse = await uploadBytes(newImageRef, image);
+
+            // Add a new poster to Firestore
+            const postersRef = doc(db, 'posters', posterId);
+            const newPosterData: PosterData = {
+                title,
+                description,
+            };
+            await setDoc(postersRef, newPosterData);
+
+            // Redirect to poster page with the posterId query parameter
+            navigate(`/admin/poster?posterId=${posterId}`);
+
+        }
+
+        setState(CreatePosterState.Loaded);
+    };
+    const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
         if (!posterId) {
             setState(CreatePosterState.Error)
@@ -68,7 +99,7 @@ const PosterCMSPage: React.FunctionComponent = () => {
             setState(CreatePosterState.Loading);
 
             const newImageRef = ref(storage, `posters/${posterId}`);
-            const uploadImageResonse = await uploadBytes(newImageRef, image)
+            const uploadImageResponse = await uploadBytes(newImageRef, image)
         }
         // Update the poster information in Firestore
         if (title.length > 0 || description.length > 0) {
@@ -84,16 +115,49 @@ const PosterCMSPage: React.FunctionComponent = () => {
 
     switch (state) {
         case CreatePosterState.Loading: {
-            return <div>Loading...</div>;
+            return (
+                <AdminPageContainer userInfo={userInfo}>
+                    <div>Loading...</div>;
+                </AdminPageContainer>
+            );
         }
         case CreatePosterState.Loaded: {
             return (
                 <GenericPageContainer>
-                    <div className="poster-page">
-                        <div>
-                            <ImageWrapper src={imageUrl} />
-                        </div>
+                    <AdminPageContainer userInfo={userInfo}>
+                        <div className="poster-page">
+                            <div>
+                                <ImageWrapper src={imageUrl} />
+                            </div>
 
+                            <form className="form-container" onSubmit={handleSubmit}>
+                                <label>
+                                    Title:
+                                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                                </label>
+                                <p></p>
+                                <label>
+                                    Description:
+                                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                                </label>
+                                <p></p>
+                                <label>
+                                    Image:
+                                    <input type="file" onChange={handleImageUpload} />
+                                </label>
+                                <p></p>
+                                <button type="submit">Update Poster</button>
+                            </form>
+                        </div>
+                    </AdminPageContainer>
+                </GenericPageContainer>
+            );
+        }
+        case CreatePosterState.CreateNew: {
+            return (
+                <AdminPageContainer userInfo={userInfo}>
+                    <div className="poster-page">
+                        <ImageWrapper src={imageUrl} />
                         <form className="form-container" onSubmit={handleSubmit}>
                             <label>
                                 Title:
@@ -110,18 +174,26 @@ const PosterCMSPage: React.FunctionComponent = () => {
                                 <input type="file" onChange={handleImageUpload} />
                             </label>
                             <p></p>
-                            <button type="submit">Update Poster</button>
+                            <button type="submit">Create Poster</button>
                         </form>
                     </div>
-                </GenericPageContainer>
+                </AdminPageContainer>
             );
         }
         case CreatePosterState.NotFound: {
-            return <div>Not found.</div>;
+            return (
+                <AdminPageContainer userInfo={userInfo}>
+                    <div>Not found.</div>
+                </AdminPageContainer>
+            );
         }
         case CreatePosterState.Error:
         default: {
-            return <div>Something went wrong...</div>;
+            return (
+                <AdminPageContainer userInfo={userInfo}>
+                    <div>Something went wrong...</div>
+                </AdminPageContainer>
+            );
         }
     }
 

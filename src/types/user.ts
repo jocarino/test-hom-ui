@@ -1,3 +1,4 @@
 export type UserInfo = {
-    viewedPosters: string[]
+    viewedPosters: string[],
+    accessLevel: number
 }
